@@ -71,3 +71,9 @@ http.createServer(function (request, response) {
         request$.next({ request: this, response: response });
     });
 }).listen(8000); 
+
+
+
+//To-do
+// get post put delete, different request method
+// parser queryString
