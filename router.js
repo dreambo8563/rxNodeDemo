@@ -3,7 +3,6 @@
 
 let routerArray = [];
 
-exports.routerArray = routerArray;
 exports.addRouter = (path, handler) => {
     let urlSegments = path.split("/");
     let params = [];
@@ -33,3 +32,5 @@ exports.routerMatch = (route, request) => {
         return true;
     }
 }
+
+exports.routerArray = routerArray;
