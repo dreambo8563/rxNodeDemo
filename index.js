@@ -77,3 +77,4 @@ http.createServer(function (request, response) {
 //To-do
 // get post put delete, different request method //quick fix
 // parser queryString
+// render static html
