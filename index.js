@@ -7,12 +7,12 @@ const error$ = require('./errorHandler');
 const request$ = new Rx.Subject();
 
 //test with exception
-router.addRouter("/user", function (req, res) {
+router.addRouter("/user", "GET", function (req, res) {
     throw new Error("hahadeee");
     res.end("for /user");
 })
 
-router.addRouter("/main", function (req, res) {
+router.addRouter("/main", "GET", function (req, res) {
     res.end("for /main");
 })
 
@@ -20,7 +20,7 @@ router.addRouter("/main", function (req, res) {
 //dynamic add router
 //router with param
 setTimeout(function () {
-    router.addRouter("/new/:id", function (req, res) {
+    router.addRouter("/new/:id", "GET", function (req, res) {
         res.end(`for /new param ${JSON.stringify(req.params)}`);
     })
 }, 5000);
@@ -70,10 +70,10 @@ http.createServer(function (request, response) {
         });
         request$.next({ request: this, response: response });
     });
-}).listen(8000); 
+}).listen(8000);
 
 
 
 //To-do
-// get post put delete, different request method
+// get post put delete, different request method //quick fix
 // parser queryString
