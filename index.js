@@ -4,14 +4,17 @@
 // To-Do
 // refactor router
 
-var http = require('http');
-var Rx = require('@reactivex/rxjs');
+let http = require('http');
+let Rx = require('@reactivex/rxjs');
+let router = require('./router');
 
-var request$ = new Rx.Subject();
+console.log(router);
+
+let request$ = new Rx.Subject();
 
 
-var error$ = new Rx.Subject();
-// var log$ = new Rx.Subject();
+let error$ = new Rx.Subject();
+// let log$ = new Rx.Subject();
 
 error$.subscribe(obj => {
     switch (obj.type) {
@@ -39,59 +42,33 @@ error$.subscribe(obj => {
     }
 });
 
-var routerArray = [];
 
-function addRouter(path, handler) {
-    let urlSegments = path.split("/");
-    let params = [];
-    let regStr = urlSegments.map(x => {
-        if (x.startsWith(':')) {
-            params.push(x.slice(1));
-            return '(\\w+)';
-        } else {
-            return x;
-        }
-    }).join("\\/");
 
-    let regEx = new RegExp(`^${regStr}$`);
 
-    routerArray.push({ path: regEx, handler: handler, params: params });
-}
 
-addRouter("/user", function (req, res) {
+router.addRouter("/user", function (req, res) {
     throw new Error("hahadeee");
     res.end("for /user");
 })
 
-addRouter("/main", function (req, res) {
+router.addRouter("/main", function (req, res) {
     res.end("for /main");
 })
 
 
 //dynamic add router
 setTimeout(function () {
-    addRouter("/new/:id", function (req, res) {
+    router.addRouter("/new/:id", function (req, res) {
         res.end(`for /new param ${JSON.stringify(req.params)}`);
     })
 }, 5000);
 
-function routerMatch(route, request) {
-    let result = route.path.exec(request.url);
-    if (!result) {
-        return false;
-    } else {
-        request.params = {};
-        route.params.map((v, i) => {
-            request.params[v] = result[i + 1];
-        })
-        return true;
-    }
-}
+
 
 request$
     .filter(http => http.request.url != "/favicon.ico")
-    .withLatestFrom(Rx.Observable.defer(() => Rx.Observable.of(routerArray)), (http, routers) => {
-        let matchedRouter = routers.find((v, i) => routerMatch(v, http.request));
+    .withLatestFrom(Rx.Observable.defer(() => Rx.Observable.of(router.routerArray)), (http, routers) => {
+        let matchedRouter = routers.find((v, i) => router.routerMatch(v, http.request));
         if (!!matchedRouter) {
             return { router: matchedRouter, request: http.request, response: http.response };
         } else {
@@ -111,7 +88,7 @@ request$
 
 
 http.createServer(function (request, response) {
-    var body = [];
+    let body = [];
     request.on('error', function (error) {
         error$.next({ error: error, response: response, type: "REQUEST" })
     }).on('data', function (chunk) {
