@@ -39,8 +39,15 @@ request$
             return { router: matchedRouter, request: http.request, response: http.response };
         } else {
             error$.next({ error: null, response: http.response, type: "ROUTE" })
+            return {
+                router: {
+                    handler: function () {
+                    }
+                },
+                request: http.request, response: http.response
+            }
         }
-    }).filter(x => !!x)
+    })
     .subscribe(routerHandler => {
         try {
             routerHandler.router.handler(routerHandler.request, routerHandler.response);
