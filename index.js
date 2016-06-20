@@ -1,9 +1,5 @@
 'use strict';
 
-
-// To-Do
-// refactor router
-
 const http = require('http');
 const Rx = require('@reactivex/rxjs');
 const router = require('./router');
