@@ -4,7 +4,8 @@ const http = require('http');
 const Rx = require('@reactivex/rxjs');
 const router = require('./router');
 const error$ = require('./errorHandler');
-const path = require('./path');
+const path = require('./path'); 
+
 const request$ = new Rx.Subject();
 
 //test with exception
@@ -14,7 +15,7 @@ router.addRouter("/user", "GET", function (req, res) {
 })
 
 router.addRouter("/main", "GET", function (req, res) {
-    res.end("for /main", JSON.stringify(req.queryString));
+    res.end("for /main",JSON.stringify(req.queryString));
 })
 
 
@@ -27,8 +28,7 @@ setTimeout(function () {
 }, 5000);
 
 
-path.setPublic("\gppd");
-
+path.setPublic("\gppd"); 
 request$
     .filter(http => http.request.url != "/favicon.ico")
     .withLatestFrom(Rx.Observable.defer(() => Rx.Observable.of(router.routerArray)), (http, routers) => {
