@@ -13,7 +13,7 @@ router.addRouter("/user", "GET", function (req, res) {
 })
 
 router.addRouter("/main", "GET", function (req, res) {
-    res.end("for /main");
+    res.end("for /main",JSON.stringify(req.queryString));
 })
 
 
@@ -21,7 +21,7 @@ router.addRouter("/main", "GET", function (req, res) {
 //router with param
 setTimeout(function () {
     router.addRouter("/new/:id", "GET", function (req, res) {
-        res.end(`for /new param ${JSON.stringify(req.params)}`);
+        res.end(`for /new param ${JSON.stringify(req.params)} and query ${JSON.stringify(req.queryString)}`);
     })
 }, 5000);
 
@@ -75,6 +75,4 @@ http.createServer(function (request, response) {
 
 
 //To-do
-// get post put delete, different request method //quick fix
-// parser queryString
 // render static html

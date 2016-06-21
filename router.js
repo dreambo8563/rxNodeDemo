@@ -21,8 +21,10 @@ exports.addRouter = (path, method, handler) => {
 }
 
 exports.routerMatch = (route, request) => {
+
     if (route.method == request.method) {
-        let result = route.path.exec(request.url);
+        let url = parserQueryStirng(request);
+        let result = route.path.exec(url);
         if (!result) {
             return false;
         } else {
@@ -36,6 +38,19 @@ exports.routerMatch = (route, request) => {
         return false;
     }
 
+}
+
+function parserQueryStirng(request) {
+    let queryArr = request.url.split('?');
+    if (queryArr.length > 1) {
+        request.queryString = {};
+        queryArr[1].split('&').map(query => {
+            let pair = query.split('=');
+            request.queryString[pair[0]] = pair[1];
+        })
+    }
+
+    return queryArr[0];
 }
 
 exports.routerArray = routerArray;
