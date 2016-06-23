@@ -12,7 +12,7 @@ var gos = document.querySelectorAll('.go');
 // solution1
 Array.prototype.map.call(gos, function (v, i) {
     v.addEventListener('click', function () {
-        console.log(i+1);
+        console.log(i + 1);
     })
 });
 
@@ -28,3 +28,4 @@ function clickEvent(v, i) {
         console.log(i + 1);
     })
 }
+

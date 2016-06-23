@@ -6,6 +6,7 @@ const Rx = require('@reactivex/rxjs');
 const router = require('./router');
 const error$ = require('./errorHandler');
 const path = require('./path');
+const staticRes = require('./static.js');
 
 const request$ = new Rx.Subject();
 
@@ -15,6 +16,7 @@ let publicPath = path.publicDirectory();
 //test with exception
 router.addRouter("/user", "GET", function (req, res) {
     // throw new Error("hahadeee");
+    // staticRes.isStaticReq(publicPath, '/js/main.js');
     const r = fs.createReadStream(`${publicPath}/index.html`);
     r.pipe(res);
     // res.end("for /user");
@@ -36,23 +38,31 @@ setTimeout(function () {
 
 
 
-request$
+let allRequest$ = request$
     .filter(http => http.request.url != "/favicon.ico")
+    .partition((v, i) => staticRes.isStaticReq(publicPath, v.request.url))
+
+
+let staticReqeust$ = allRequest$[0];
+let logicRequest$ = allRequest$[1];
+
+staticReqeust$.subscribe(
+    //when get the http ...send file to end the response
+    x => {
+        console.log(x.request.url);
+        x.response.end("static resouce");
+    }
+);
+
+logicRequest$
     .withLatestFrom(Rx.Observable.defer(() => Rx.Observable.of(router.routerArray)), (http, routers) => {
         let matchedRouter = routers.find((v, i) => router.routerMatch(v, http.request));
         if (!!matchedRouter) {
             return { router: matchedRouter, request: http.request, response: http.response };
         } else {
             error$.next({ error: null, response: http.response, type: "ROUTE" })
-            return {
-                router: {
-                    handler: function () {
-                    }
-                },
-                request: http.request, response: http.response
-            }
         }
-    })
+    }).filter(x => !!x)
     .subscribe(routerHandler => {
         try {
             routerHandler.router.handler(routerHandler.request, routerHandler.response);
