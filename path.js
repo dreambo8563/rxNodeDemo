@@ -12,3 +12,5 @@ exports.setPublic = newPath => {
 } 
  
 exports.publicDirectory = () => publicPath;
+
+// deal with public folder as router

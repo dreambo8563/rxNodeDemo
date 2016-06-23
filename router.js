@@ -21,23 +21,19 @@ exports.addRouter = (path, method, handler) => {
 }
 
 exports.routerMatch = (route, request) => {
+    //check if request is the static resouces
 
     if (route.method == request.method) {
-        let url = parserQueryStirng(request);
-        let result = route.path.exec(url);
-        if (!result) {
-            return false;
-        } else {
+        let result = route.path.exec(parserQueryStirng(request));
+        if (!!result) {
             request.params = {};
             route.params.map((v, i) => {
                 request.params[v] = result[i + 1];
             })
             return true;
         }
-    } else {
-        return false;
     }
-
+    return false;
 }
 
 function parserQueryStirng(request) {
