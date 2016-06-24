@@ -2,6 +2,7 @@
 const fs = require('fs');
 
 // need to refactor with stream /async one
+// the way is tricky
 exports.isStaticReq = (publicPath, filePath) => {
     try {
         fs.statSync(`${publicPath}${filePath}`)
@@ -9,4 +10,10 @@ exports.isStaticReq = (publicPath, filePath) => {
         return false;
     }
     return true;
+}
+
+
+exports.render = (path, res) => {
+    const r = fs.createReadStream(path);
+    r.pipe(res);
 }

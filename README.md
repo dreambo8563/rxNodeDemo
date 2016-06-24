@@ -7,3 +7,4 @@ Just a simple http server migrate with rx
 - parser with param /main/:id 
 - parser with queryString /main/:id?name=vincent 
 - set publicDirectory 
+- render static html - static router and router match

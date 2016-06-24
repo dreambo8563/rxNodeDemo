@@ -16,10 +16,7 @@ let publicPath = path.publicDirectory();
 //test with exception
 router.addRouter("/user", "GET", function (req, res) {
     // throw new Error("hahadeee");
-    // staticRes.isStaticReq(publicPath, '/js/main.js');
-    const r = fs.createReadStream(`${publicPath}/index.html`);
-    r.pipe(res);
-    // res.end("for /user");
+         staticRes.render(`${publicPath}/index.html`, res);
 })
 
 router.addRouter("/main", "GET", function (req, res) {
@@ -46,13 +43,14 @@ let allRequest$ = request$
 let staticReqeust$ = allRequest$[0];
 let logicRequest$ = allRequest$[1];
 
-staticReqeust$.subscribe(
-    //when get the http ...send file to end the response
+staticReqeust$
+    .map(x => { return { url: `${publicPath}${x.request.url}`, res: x.response } })
+    .subscribe(
     x => {
-        console.log(x.request.url);
-        x.response.end("static resouce");
+        staticRes.render(x.url, x.res);
+        console.log(x.url);
     }
-);
+    );
 
 logicRequest$
     .withLatestFrom(Rx.Observable.defer(() => Rx.Observable.of(router.routerArray)), (http, routers) => {
@@ -94,6 +92,5 @@ http.createServer(function (request, response) {
 
 
 //To-do
-// render static html // static router and router match
 // log errors into file
 // send/receive file - error path for read files

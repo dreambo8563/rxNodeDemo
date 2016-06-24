@@ -18,14 +18,14 @@ Array.prototype.map.call(gos, function (v, i) {
 
 
 // solution2
-for (var index = 0; index < gos.length; index++) {
-    var element = gos[index];
-    clickEvent(gos[index], index);
-}
+// for (var index = 0; index < gos.length; index++) {
+//     var element = gos[index];
+//     clickEvent(gos[index], index);
+// }
 
-function clickEvent(v, i) {
-    v.addEventListener('click', function () {
-        console.log(i + 1);
-    })
-}
+// function clickEvent(v, i) {
+//     v.addEventListener('click', function () {
+//         console.log(i + 1);
+//     })
+// }
 
