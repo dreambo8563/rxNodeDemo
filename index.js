@@ -1,28 +1,25 @@
 'use strict';
 
 const http = require('http');
-const fs = require('fs');
 const Rx = require('@reactivex/rxjs');
 const router = require('./router');
 const error$ = require('./errorHandler');
-const path = require('./path');
-const staticRes = require('./static.js');
+const staticModule = require('./static.js');
 
 const request$ = new Rx.Subject();
 
 let publicPath;
-path.publicPath$.subscribe(x => {
+staticModule.publicPath$.subscribe(x => {
     publicPath = x;
-    console.log("publci", x);
 });
 
-path.setPublic("./public");
+staticModule.setPublic("./public");
 
 
 //test with exception
 router.addRouter("/user", "GET", function (req, res) {
     // throw new Error("hahadeee");
-    staticRes.render(`/index.html`, res);
+    staticModule.render(`/index.html`, res);
 })
 
 router.addRouter("/main", "GET", function (req, res) {
@@ -39,11 +36,9 @@ setTimeout(function () {
 }, 5000);
 
 
-
-
 let allRequest$ = request$
     .filter(http => http.request.url != "/favicon.ico")
-    .partition((v) => staticRes.isStaticReq(v.request.url))
+    .partition((v) => staticModule.isStaticReq(v.request.url))
 
 
 let staticReqeust$ = allRequest$[0];
@@ -53,7 +48,7 @@ staticReqeust$
     .map(x => { return { url: x.request.url, res: x.response } })
     .subscribe(
     x => {
-        staticRes.render(x.url, x.res);
+        staticModule.render(x.url, x.res);
         //log static resource url
         console.log(x.url);
     }
