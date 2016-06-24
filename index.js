@@ -15,7 +15,6 @@ staticModule.publicPath$.subscribe(x => {
 
 staticModule.setPublic("./public");
 
-
 //test with exception
 router.addRouter("/user", "GET", function (req, res) {
     // throw new Error("hahadeee");

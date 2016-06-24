@@ -20,12 +20,11 @@ exports.setPublic = newPath => {
     }
 }
 
-exports.publicPath$ = publicPath$;
-
 
 publicPath$.subscribe(x => {
     publicPath = x;
 });
+
 
 exports.isStaticReq = (filePath) => {
     try {
@@ -41,3 +40,5 @@ exports.render = (path, res) => {
     const r = fs.createReadStream((`${publicPath}${path}`));
     r.pipe(res);
 }
+
+exports.publicPath$ = publicPath$;

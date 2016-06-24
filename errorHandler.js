@@ -1,29 +1,30 @@
 'use strict';
 
 let Rx = require('@reactivex/rxjs');
+const log$ = require('./log.js');
 let error$ = new Rx.Subject();
 
 error$.subscribe(obj => {
     switch (obj.type) {
         case 'REQUEST':
-            console.log("log request error", obj.error);
+            log$.next(`request error ${obj.error}`);
             obj.response.end("request error");
             break;
         case 'RESPONSE':
-            console.log("log response error", obj.error);
+            log$.next(`log response error ${obj.error}`);
             obj.response.end("response error");
             break;
         case 'HANDLER':
-            console.log("exception in your function", obj.error);
+            log$.next(`exception in your function ${obj.error}`);
             obj.response.end("exception in your function");
             break;
         case 'ROUTE':
-            console.log("route not matched");
+            log$.next("route not matched");
             obj.response.end("route not matched");
             break;
 
         default:
-            console.log("error on error stream no cases");
+            log$.next("error on error stream no cases");
             obj.response.end("error on error stream no cases");
             break;
     }
