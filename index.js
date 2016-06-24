@@ -10,13 +10,19 @@ const staticRes = require('./static.js');
 
 const request$ = new Rx.Subject();
 
+let publicPath;
+path.publicPath$.subscribe(x => {
+    publicPath = x;
+    console.log("publci", x);
+});
+
 path.setPublic("./public");
-let publicPath = path.publicDirectory();
+
 
 //test with exception
 router.addRouter("/user", "GET", function (req, res) {
     // throw new Error("hahadeee");
-         staticRes.render(`${publicPath}/index.html`, res);
+    staticRes.render(`/index.html`, res);
 })
 
 router.addRouter("/main", "GET", function (req, res) {
@@ -37,17 +43,18 @@ setTimeout(function () {
 
 let allRequest$ = request$
     .filter(http => http.request.url != "/favicon.ico")
-    .partition((v, i) => staticRes.isStaticReq(publicPath, v.request.url))
+    .partition((v) => staticRes.isStaticReq(v.request.url))
 
 
 let staticReqeust$ = allRequest$[0];
 let logicRequest$ = allRequest$[1];
 
 staticReqeust$
-    .map(x => { return { url: `${publicPath}${x.request.url}`, res: x.response } })
+    .map(x => { return { url: x.request.url, res: x.response } })
     .subscribe(
     x => {
         staticRes.render(x.url, x.res);
+        //log static resource url
         console.log(x.url);
     }
     );
