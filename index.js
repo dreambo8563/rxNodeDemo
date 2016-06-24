@@ -60,14 +60,14 @@ logicRequest$
         if (!!matchedRouter) {
             return { router: matchedRouter, request: http.request, response: http.response };
         } else {
-            error$.next({ error: null, response: http.response, type: "ROUTE" })
+            error$.next({ error: null, response: http.response, type: "ROUTE" });
         }
     }).filter(x => !!x)
     .subscribe(routerHandler => {
         try {
             routerHandler.router.handler(routerHandler.request, routerHandler.response);
         } catch (error) {
-            error$.next({ error: error, response: routerHandler.response, type: "HANDLER" })
+            error$.next({ error: error, response: routerHandler.response, type: "HANDLER" });
         }
     },
     () => { },

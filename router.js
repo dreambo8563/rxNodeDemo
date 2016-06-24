@@ -21,8 +21,6 @@ exports.addRouter = (path, method, handler) => {
 }
 
 exports.routerMatch = (route, request) => {
-    //check if request is the static resouces
-
     if (route.method == request.method) {
         let result = route.path.exec(parserQueryStirng(request));
         if (!!result) {
