@@ -8,3 +8,4 @@ Just a simple http server migrate with rx
 - parser with queryString /main/:id?name=vincent 
 - set publicDirectory 
 - render static html - static router and router match
+- log errors into file

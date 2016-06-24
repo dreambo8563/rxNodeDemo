@@ -48,8 +48,6 @@ staticReqeust$
     .subscribe(
     x => {
         staticModule.render(x.url, x.res);
-        //log static resource url
-        console.log(x.url);
     }
     );
 
@@ -93,5 +91,4 @@ http.createServer(function (request, response) {
 
 
 //To-do
-// log errors into file
 // send/receive file - error path for read files
