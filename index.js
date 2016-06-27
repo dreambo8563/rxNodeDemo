@@ -5,6 +5,7 @@ const Rx = require('@reactivex/rxjs');
 const router = require('./router');
 const error$ = require('./errorHandler');
 const staticModule = require('./static.js');
+const helper = require('./helper.js');
 
 const request$ = new Rx.Subject();
 
@@ -12,6 +13,16 @@ let publicPath;
 staticModule.publicPath$.subscribe(x => {
     publicPath = x;
 });
+
+
+
+var a = {aa:"goood"}
+
+let stream = new Rx.Subject();
+let xxx = helper.ObservableObject(a, stream);
+stream.subscribe(x => console.log("stream", x));
+
+xxx.mm="98";
 
 staticModule.setPublic("./public");
 
@@ -92,3 +103,4 @@ http.createServer(function (request, response) {
 
 //To-do
 // send/receive file - error path for read files
+

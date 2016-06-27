@@ -9,3 +9,4 @@ Just a simple http server migrate with rx
 - set publicDirectory 
 - render static html - static router and router match
 - log errors into file
+- helper.ObservableObject function(obj/array)
