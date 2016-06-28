@@ -5,7 +5,7 @@ const Rx = require('@reactivex/rxjs');
 const router = require('./router');
 const error$ = require('./errorHandler');
 const staticModule = require('./static.js');
-const helper = require('./helper.js');
+const utility = require('./utility.js');
 
 const request$ = new Rx.Subject();
 
@@ -16,13 +16,14 @@ staticModule.publicPath$.subscribe(x => {
 
 
 
-var a = {aa:"goood"}
+var a = [1,2,3,54]
 
 let stream = new Rx.Subject();
-let xxx = helper.ObservableObject(a, stream);
+let xxx = utility.ObservableObject(a, stream);
 stream.subscribe(x => console.log("stream", x));
 
-xxx.mm="98";
+xxx.splice(1,2);
+xxx.push(55);
 
 staticModule.setPublic("./public");
 
