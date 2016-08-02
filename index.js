@@ -16,13 +16,13 @@ staticModule.publicPath$.subscribe(x => {
 
 
 
-var a = [1,2,3,54]
+var a = [1, 2, 3, 54];
 
 let stream = new Rx.Subject();
 let xxx = utility.ObservableObject(a, stream);
 stream.subscribe(x => console.log("stream", x));
 
-xxx.splice(1,2);
+xxx.splice(1, 2);
 xxx.push(55);
 
 staticModule.setPublic("./public");
@@ -30,6 +30,8 @@ staticModule.setPublic("./public");
 //test with exception
 router.addRouter("/user", "GET", function (req, res) {
     // throw new Error("hahadeee");
+    //need to setHeader if you want to download a file
+    res.setHeader('Content-disposition', 'attachment; filename=index.html');
     staticModule.render(`/index.html`, res);
 })
 
@@ -104,4 +106,6 @@ http.createServer(function (request, response) {
 
 //To-do
 // send/receive file - error path for read files
+// parser form data
+// middleware support
 
