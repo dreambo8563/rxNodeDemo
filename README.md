@@ -24,6 +24,9 @@ vs code settings:
         }
     },
     "javascript.validate.enable": false,
-    "eslint.enable": true
+    "eslint.enable": true,
+    "files.associations": {
+        "*.js": "javascriptreact"
+    }
 }
 ```
