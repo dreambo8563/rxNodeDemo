@@ -14,6 +14,7 @@ Just a simple http server migrate with rx
 vs code settings:
 
 ```json
+// Place your settings in this file to overwrite default and user settings.
 {
     "files.exclude": {
         "**/.git": true,
@@ -26,7 +27,8 @@ vs code settings:
     "javascript.validate.enable": false,
     "eslint.enable": true,
     "files.associations": {
-        "*.js": "javascriptreact"
+        "*.js": "javascriptreact",
+        "*.css": "scss"
     }
 }
 ```
